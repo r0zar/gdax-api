@@ -1,2 +1,2 @@
 # gdax-api
-angularjs UI to connect to GDAX apis
+GCP apps to connect to GDAX APIs
