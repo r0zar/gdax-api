@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GDAX Client</title>
+  <link rel="apple-touch-icon-precomposed" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="apple-touch-icon-precomposed" sizes="128x128" href="./favicon-128x128.png">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+</head>
+<body class="index-page">
+<div class="container" ng-app="gdaxClient" ng-controller="mainController">
+
+  <header>
+    <h1>Open-source GDAX client</h1>
+  </header>
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1>Log in with API creds</h1>
+      <small>Your credentials are not stored in any backend- see <a href="https://github.com/r0zar/vanilla-es6-jspm">the source code</a> for proof.</small>
+      <br />
+      <br />
+      <form name="form">
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-lock" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" placeholder="Passphrase" aria-describedby="basic-addon1" ng-model="passphrase" required>
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" placeholder="API Key" aria-describedby="basic-addon2" ng-model="apikey" required>
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon3"><i class="fa fa-user-secret" aria-hidden="true"></i></span>
+          <input type="text" class="form-control" placeholder="Base 64 Secret" aria-describedby="basic-addon3" ng-model="secret" required>
+        </div>
+        <br>
+        <button type="button" class="btn btn-primary" ng-disabled="" ng-click="signIn()">Sign in</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p class="text-center">
+      <a href="http://rossragsdale.com/">rossragsdale.com</a>
+    </p>
+  </footer>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://use.fontawesome.com/3a14ef6f63.js"></script>
+<script>
+  angular
+    .module('gdaxClient', [])
+    .controller('mainController', function($scope, $http) {
+      var apiURL = 'https://api-public.sandbox.gdax.com';
+      $scope.signIn = function(){
+        var req = {
+         method: 'POST',
+         url: 'https://us-central1-gdax-api.cloudfunctions.net/helloWorld',
+         data: { apiURL, passphrase: $scope.passphrase, apikey: $scope.apikey, secret: $scope.secret }
+        }
+        $http(req)
+      }
+    })
+</script>
+</body>
+</html>
