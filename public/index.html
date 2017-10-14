@@ -5,7 +5,8 @@
   <title>GDAX Client</title>
   <link rel="apple-touch-icon-precomposed" sizes="32x32" href="./favicon-32x32.png">
   <link rel="apple-touch-icon-precomposed" sizes="128x128" href="./favicon-128x128.png">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 </head>
 <body class="index-page">
@@ -17,7 +18,7 @@
 
   <div class="jumbotron">
     <div class="container">
-      <h1>Log in with API creds</h1>
+      <h2>Log in with GDAX API credentials</h2>
       <small>Your credentials are not stored in any backend- see <a href="https://github.com/r0zar/vanilla-es6-jspm">the source code</a> for proof.</small>
       <br />
       <br />
@@ -48,11 +49,17 @@
     </p>
   </footer>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<!-- AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
+<!-- Include your JavaScript files here -->
 <script src="https://use.fontawesome.com/3a14ef6f63.js"></script>
 <script>
   angular
-    .module('gdaxClient', [])
+    .module('gdaxClient', ['ui.bootstrap'])
     .controller('mainController', function($scope, $http) {
       var apiURL = 'https://api-public.sandbox.gdax.com';
       $scope.signIn = function(){
