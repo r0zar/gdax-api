@@ -18,8 +18,9 @@
 
   <div class="jumbotron">
     <div class="container">
-      <h2>Log in with GDAX API credentials</h2>
-      <small>Your credentials are not stored in any backend- see <a href="https://github.com/r0zar/gdax-api">the source code</a> for proof.</small>
+      <h2>Connect with GDAX API credentials</h2>
+      <small>You can create API credentials from your <a href="https://www.gdax.com/settings/api">GDAX</a> account.</small>
+      <small>Your credentials are not stored by this application- see <a href="https://github.com/r0zar/gdax-api">the source code</a> for proof.</small>
       <br />
       <br />
       <form name="form">
@@ -43,6 +44,33 @@
     </div>
   </div>
 
+  <div class="card-deck">
+    <div class="card">
+      <img class="card-img-top" src="..." alt="Card image cap">
+      <div class="card-block">
+        <h4 class="card-title">Card title</h4>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top" src="..." alt="Card image cap">
+      <div class="card-block">
+        <h4 class="card-title">Card title</h4>
+        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      </div>
+    </div>
+    <div class="card">
+      <img class="card-img-top" src="..." alt="Card image cap">
+      <div class="card-block">
+        <h4 class="card-title">Card title</h4>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      </div>
+    </div>
+  </div>
+
   <footer class="footer">
     <p class="text-center">
       <a href="http://rossragsdale.com/">rossragsdale.com</a>
@@ -59,17 +87,14 @@
 <script src="https://use.fontawesome.com/3a14ef6f63.js"></script>
 <script>
   angular
-    .module('gdaxClient', ['ui.bootstrap'])
+    .module('gdaxClient', [])
     .controller('mainController', function($scope, $http) {
       var apiURL = 'https://api-public.sandbox.gdax.com';
       $scope.signIn = function(){
-        var req = {
-         method: 'POST',
-         url: 'https://us-central1-gdax-api.cloudfunctions.net/helloWorld',
-         data: { apiURL, passphrase: $scope.passphrase, apikey: $scope.apikey, secret: $scope.secret }
-        }
-        $http(req)
+        console.log($scope)
       }
+      $http({method: 'GET', url: 'https://us-central1-gdax-api.cloudfunctions.net/getProductTicker', data: {apiURL, product: 'BTC-USD'}})
+        .then(function(ticker){console.log(ticker)})
     })
 </script>
 </body>
