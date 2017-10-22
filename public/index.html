@@ -6,7 +6,7 @@
   <link rel="apple-touch-icon-precomposed" sizes="32x32" href="./favicon-32x32.png">
   <link rel="apple-touch-icon-precomposed" sizes="128x128" href="./favicon-128x128.png">
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 </head>
 <body class="index-page">
@@ -18,7 +18,7 @@
 
   <div class="jumbotron">
     <div class="container">
-      <h2>Connect with GDAX API credentials</h2>
+      <h2>Connect with API credentials</h2>
       <small>You can create API credentials from your <a href="https://www.gdax.com/settings/api">GDAX</a> account.</small>
       <small>Your credentials are not stored by this application- see <a href="https://github.com/r0zar/gdax-api">the source code</a> for proof.</small>
       <br />
@@ -44,29 +44,59 @@
     </div>
   </div>
 
-  <div class="card-deck">
-    <div class="card">
-      <img class="card-img-top" src="..." alt="Card image cap">
-      <div class="card-block">
-        <h4 class="card-title">Card title</h4>
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+  <div class="container">
+    <div class="card-group">
+      <div class="col-md-4">
+        <div class="card">
+          <h3 class="card-header">BTC-USD</h3>
+          <div class="card-block">
+            <pre>
+{{btc.ticker.data | json}}
+            </pre>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <h3 class="card-header">ETH-USD</h3>
+          <div class="card-block">
+            <pre>
+{{eth.ticker.data | json}}
+            </pre>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <h3 class="card-header">LTC-USD</h3>
+          <div class="card-block">
+            <pre>
+{{ltc.ticker.data | json}}
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <img class="card-img-top" src="..." alt="Card image cap">
-      <div class="card-block">
-        <h4 class="card-title">Card title</h4>
-        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-      </div>
-    </div>
-    <div class="card">
-      <img class="card-img-top" src="..." alt="Card image cap">
-      <div class="card-block">
-        <h4 class="card-title">Card title</h4>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  <br />
+  <div class="container">
+    <div class="card-group">
+      <div class="card">
+        <h3 class="card-header">Accounts</h3>
+        <div class="card-block">
+          <div ng-repeat="account in accounts.data">
+            <div class="card">
+              <h3 class="card-header">{{account.currency}}</h3>
+              <div class="card-block">
+                <pre>
+{{account | json}}
+                </pre>
+              </div>
+            </div>
+            <br />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -85,16 +115,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
 <!-- Include your JavaScript files here -->
 <script src="https://use.fontawesome.com/3a14ef6f63.js"></script>
+
 <script>
   angular
     .module('gdaxClient', [])
     .controller('mainController', function($scope, $http) {
-      var apiURL = 'https://api-public.sandbox.gdax.com';
+      var apiURI = 'https://api.gdax.com';
       $scope.signIn = function(){
-        console.log($scope)
+        $http({method: 'GET', url: 'https://us-central1-gdax-api.cloudfunctions.net/getAccounts', params: {apikey: $scope.apikey, passphrase: $scope.passphrase, secret: $scope.secret, apiURI}})
+          .then(function(accounts){$scope.accounts = accounts})
       }
-      $http({method: 'GET', url: 'https://us-central1-gdax-api.cloudfunctions.net/getProductTicker', data: {apiURL, product: 'BTC-USD'}})
-        .then(function(ticker){console.log(ticker)})
+      $scope.btc = {}
+      $scope.eth = {}
+      $scope.ltc = {}
+      $http({method: 'GET', url: 'https://us-central1-gdax-api.cloudfunctions.net/getProductTicker', params: {productID: 'BTC-USD', apiURI}})
+        .then(function(ticker){$scope.btc.ticker = ticker})
+      $http({method: 'GET', url: 'https://us-central1-gdax-api.cloudfunctions.net/getProductTicker', params: {productID: 'ETH-USD', apiURI}})
+        .then(function(ticker){$scope.eth.ticker = ticker})
+      $http({method: 'GET', url: 'https://us-central1-gdax-api.cloudfunctions.net/getProductTicker', params: {productID: 'LTC-USD', apiURI}})
+        .then(function(ticker){$scope.ltc.ticker = ticker})
     })
 </script>
 </body>
